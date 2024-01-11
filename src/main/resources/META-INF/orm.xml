@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	
+	<named-native-query name="Vendas.totalPorMes" result-set-mapping="totalPorMesMapping">
+		<query>
+			select date_format(data_criacao, '%Y/%m') mes
+				 , count(*) total
+  			from venda
+  			where data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+  			  and status = 'FECHADO'
+			group by date_format(data_criacao, '%Y/%m')   
+			order by date_format(data_criacao, '%Y/%m') desc
+	    </query>
+	</named-native-query>
+	<named-native-query name="Vendas.porCategoria" result-set-mapping="porCategoriaMapping">
+		<query>
+			select date_format(v.data_criacao, '%Y/%m') mes
+                , group_concat(distinct (select coalesce(sum(i.quantidade), 0) 
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'ACESSORIO'
+				       and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_acessorio
+                 , group_concat(distinct (select coalesce(sum(i.quantidade), 0) 
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'BANHOETOSA'
+				       and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_banho
+				   	 , group_concat(distinct (select coalesce(sum(i.quantidade), 0)
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'HIGIENE'
+		    	       and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_higiene
+				 , group_concat(distinct (select coalesce(sum(i.quantidade), 0) 
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'PETISCO'
+			           and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_petisco
+				 , group_concat(distinct (select coalesce(sum(i.quantidade), 0)
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'RACAO'
+				       and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_racao
+                    
+			
+                   , group_concat(distinct (select coalesce(sum(i.quantidade), 0)
+				     from item_venda i
+				        , produto c
+				        , venda v1
+				     where i.codigo_venda = v1.codigo 
+				       and i.codigo_produto = c.codigo
+				       and c.categoria = 'REMEDIO'
+				       and status = 'FECHADO'
+				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
+				   )) total_remedio
+			 from venda v
+			 where v.data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+			   and status = 'FECHADO'
+			   group by date_format(v.data_criacao, '%Y/%m')  
+			   order by date_format(v.data_criacao, '%Y/%m') desc
+	    </query>
+	</named-native-query>
+	<sql-result-set-mapping name="totalPorMesMapping">
+		<constructor-result target-class="com.petapp.dto.VendaMes">
+			<column name="mes" class="java.lang.String"/>
+			<column name="total" class="java.lang.Integer"/>
+		</constructor-result>
+	</sql-result-set-mapping>
+	<sql-result-set-mapping name="porCategoriaMapping">
+		<constructor-result target-class="com.petapp.dto.VendaCategoria">
+			<column name="mes" class="java.lang.String"/>
+			<column name="total_acessorio" class="java.lang.Integer"/>
+			<column name="total_banho" class="java.lang.Integer"/>
+			<column name="total_higiene" class="java.lang.Integer"/>
+			<column name="total_petisco" class="java.lang.Integer"/>
+			<column name="total_racao" class="java.lang.Integer"/>
+			<column name="total_remedio" class="java.lang.Integer"/>
+			
+		</constructor-result>
+	</sql-result-set-mapping>
+</entity-mappings>

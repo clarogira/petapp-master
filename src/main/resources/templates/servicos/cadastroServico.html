@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head></head>
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h2 style="color: #A3723D" th:if="${servico.nova}">Cadastro de servico</h2>
+					<h2 style="color: #A3723D" th:unless="${servico.nova}" th:text="|Edição do Serviço ${servico.nome}|">Edição de servico</h2>
+				</div>
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-primary" href="/servicos"> <i
+							class="fa  fa-plus-circle"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa Serviço</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+
+		<th:block th:include="fragments/MensagemSucesso"></th:block>
+
+				<form class="container-fluid" method="post" th:action= "${servico.nova} ? @{/servicos/nova} : @{/servicos/{codigo}(codigo=${servico.codigo})}" th:object="${servico}">
+				<input type="hidden" th:field="*{codigo}" />
+
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="control-label" for="Nome:">Nome</label> <input
+						type="text" class="form-control" placeholder="Nome"
+						th:field="*{nome}" />
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label" for="valorservico">Valor do
+						serviço</label> <input type="text" class="form-control js-decimal"
+						placeholder="valor do serviço" th:field="*{valorServico}" />
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label" for="Observacoes">Descrição</label>
+					<textarea rows="3" class="form-control" th:field="*{descricao}"></textarea>
+				</div>
+			</div>
+
+			<button class="btn  btn-primary" type="submit">Salvar</button>
+		</form>
+
+	</div>
+
+	
+
+</section>
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input"
+			type="text" placeholder="O que você está procurando?" />
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+
+</html>

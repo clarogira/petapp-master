@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head></head>
+<section layout:fragment="conteudo">
+
+
+
+
+<div class="page-header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-10">
+				<h2 style="color: #A3723D">Pesquisa de Animais	</h2>
+			</div>
+			
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn btn-primary" href="/animais/nova">
+						<i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Novo Animal</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+
+	<th:block th:include="fragments/MensagemSucesso"></th:block>
+	
+	<form method="get" class="form-vertical  js-form-loading" th:object="${animalFilter}" >
+		<div class="row">
+				<div class="col-sm-6  form-group">
+					<label class="control-label" for="animal">Animal</label> <input
+						type="text" class="form-control" th:field="*{nome}" />
+				</div>
+
+				<div class="form-group col-md-3">
+					<label class="control-label" for="raca">Raça</label> <select
+						class="form-control" th:field="*{raca}">
+		<option value="">Selecione</option>
+		<option th:each="raca : ${racas}"	th:value="${raca}" th:text="${raca.raca}"></option>
+
+					</select>
+
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label" for="cor">Cor</label> <select
+						class="form-control" th:field="*{cor}">
+		<option value="">Selecione</option>
+		<option th:each="cor : ${cores}"	th:value="${cor}" th:text="${cor.cor}"></option>
+
+					</select>
+			</div>
+			</div>
+			<div class="row">
+
+
+				<div class="col-sm-12  form-group">
+					<label class="control-label" for="estilo">Cliente</label>
+					<select id="cliente" class="form-control" th:field="*{cliente}">
+	                    <option value="">Todos os clientes</option>
+	                    <option th:each="cliente : ${clientes}" th:text="${cliente.nome}" th:value="${cliente.codigo}"></option>
+	                </select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group col-sm-12">
+					<label class="control-label" for="*{observacao}">Observação</label>
+					<textarea rows="1" class="form-control" th:field="*{observacao}"></textarea>
+				</div>
+			</div>
+
+
+			
+			<div class="row">
+				<button class="btn  btn-primary" type="submit">Pesquisar</button>
+
+			</div>
+		</form>
+
+
+	<div class="row  aw-datatable-toolbar">
+		<div class="col-xs-8">
+			<button class="btn btn-default  btn-sm">
+				<i class="fa fa-trash"></i> <span class="visible-md-inline  visible-lg-inline">Excluir</span>
+			</button>
+
+			<div class="btn-group">
+			  <button type="button" class="btn  btn-default  btn-sm  dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			    <i class="fa  fa-arrow-circle-down  visible-md-inline  visible-lg-inline"></i> <span>Exportar</span>
+			    <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+			    <li><a href="#">Para arquivo Excel</a></li>
+			    <li><a href="#">Para arquivo CSV</a></li>
+			    <li><a href="#">Para arquivo XML</a></li>
+			  </ul>
+			</div>
+			
+			
+		</div>
+		
+		<div class="col-xs-4">
+			<div class="btn-toolbar  pull-right" role="toolbar">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn  btn-default  btn-sm"><i class="fa fa-th-large"></i></button>
+					<button type="button" class="btn  btn-default  btn-sm  active"><i class="fa fa-bars"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="table-responsive">
+		<table id="tabela-produtos" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+			<thead class="aw-table-header-solid">
+				<tr>
+					<th class="aw-table-checkbox">
+						<input type="checkbox" class="js-selecao-todos">
+					</th>
+					
+			<th class="table-pesq-produto-col-foto">Foto</th>
+			<th class="table-pesq-produto-col-animal">
+				<th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'nome', 'Animal')"> </th:block>
+				
+			</th>
+			<th class="table-pesq-produto-col-cliente">
+			    <th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'cliente', 'Cliente')"> </th:block>
+			</th>
+			<th class="table-pesq-produto-col-raca">
+                   <th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'raca', 'Raça')"> </th:block>
+            </th>
+			<th class="table-pesq-produto-col-cor">
+                <th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'cor', 'Cor')"> </th:block>
+            </th>
+			<th class="table-pesq-produto-col-observacao">
+			     <th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'observacao', 'Observação')"> </th:block>
+			</th>
+			<th class="table-pesq-produto-col-acoes">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="animal : ${pagina.conteudo}">
+					<td class="aw-table-checkbox"><input type="checkbox" class="js-selecao"></td>
+                    <td class="text-center">
+	<img th:src="@{/img/animais/thumbnail.{foto}(foto=${animal.SemFoto})}" class="img-responsive"/>
+				   </td>				
+					<td class="table-pesq-produto-col-animal"  th:text="${animal.nome}"></td>	
+					<td class="table-pesq-produto-col-cliente" th:text="${animal.cliente.nome}"></td>	
+					<td class="table-pesq-produto-col-raca"  th:text="${animal.raca.raca}"></td>
+					<td class="table-pesq-produto-col-cor"  th:text="${animal.cor.cor}"></td>
+					<td class="table-pesq-produto-col-observacao"  th:text="${animal.observacao}"></td>
+					<td class="text-center">
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" th:href="@{/animais/{codigo}(codigo=${animal.codigo})}"> 
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+									data:url="@{/animais/{codigo}(codigo=${animal.codigo})}"
+									data:objeto="${animal.nome}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+				</tr>
+				
+			<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhum Animal encontrado</td>
+					</tr>
+		
+				
+			</tbody>
+		</table>
+	</div>
+		<th:block th:replace="fragments/pagination :: pagination (${pagina})"> </th:block>
+	
+</div>
+
+	</section>
+	
+	<footer class="aw-layout-footer  js-content">
+		<div class="container-fluid">
+			<span class="aw-footer-disclaimer">&copy; 2016 AlgaWorks. Todos os direitos reservados.</span>
+		</div>
+	</footer>
+
+
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input" type="text" placeholder="O que você está procurando?"/>
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+	
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+
+<script src="assets/javascripts/vendors.min.js"></script>
+<script src="assets/javascripts/algaworks.min.js"></script>
+
+</html>

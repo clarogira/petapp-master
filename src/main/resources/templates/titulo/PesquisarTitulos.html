@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head>
+<title>Pesquisa de título</title>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+
+					<h2 style="color: #A3723D">Pesquisa de Títulos</h2>
+				</div>
+
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-warning" href="/titulos/novo"> <i
+							class="fa  fa-plus-circle"></i> <span
+							class="hidden-xs  hidden-sm">Novo Título</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+
+		<!-- Colocar mensagens aqui... -->
+		<div th:include="/fragments/MensagemInfo"></div>
+
+		<form method="get" class="form-vertical  js-form-loading"
+			th:action="@{/titulos}" th:object="${tituloFilter}">
+
+			<div class="row">
+
+				<div class="form-group col-md-4">
+
+					<label class="control-label" for="icon_prefix">Informe a
+						descrição</label> <input class="form-control" id="icon_prefix" type="text"
+						th:field="*{descricao}" />
+				</div>
+
+				<div class="form-group col-md-4">
+					<label class="control-label" for="selection">Fornecedor</label> <select
+						id="selection" class="validate form-control"
+						th:field="*{fornecedor}">
+						<option value="" selected="selected">Todos</option>
+						<option th:each="fornecedor : ${listaDeFornecedores}"
+							th:text="${fornecedor.nome}" th:value="${fornecedor.codigo}">Lucas
+							Barros</option>
+					</select>
+
+				</div>
+				<div class="form-group col-md-4">
+					<label class="control-label" for="sabor">Tipo</label> <select
+						id="tipo" class="validate form-control" th:field="*{tipo}">
+						<option value="" selected="selected">Selecione o tipo</option>
+						<option th:each="tipo : ${todosOsTipos}"
+							th:text="${tipo.descricao}" th:value="${tipo}">Entrada</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="form-group col-md-4">
+					<label for="dataDe">Vencimento</label>
+					<div class="form-inline">
+						<div class="input-group">
+							<div class="input-group-addon">Data</div>
+							<input id="dataDe" th:field="*{dataDeValidadeDe}" type="text"
+								class="form-control js-date " />
+						</div>
+						<label for="dataAte" class="aw-form-label-between">-a-</label>
+						<div class="input-group">
+							<div class="input-group-addon">Data</div>
+							<input id="dataAte" th:field="*{dataDeValidadeAte}" type="text"
+								class="form-control js-date" />
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group col-md-4">
+					<label class="control-label" for="situacao">Situação</label> <select
+						id="situacao" class="validate form-control" th:field="*{situacao}">
+						<option value="" selected="selected">Selecione a situação</option>
+						<option th:each="situacao : ${todasAsSituacoes}"
+							th:text="${situacao.descricao}" th:value="${situacao}">Compensado</option>
+					</select>
+				</div>
+				<div class="form-group col-md-4">
+					<label class="control-label" for="comboTipoDePagamento">Pagamento</label>
+					<select id="comboTipoDePagamento" class="validate form-control"
+						th:field="*{tipoDePagamento}">
+						<option value="">Tipo de pagamento</option>
+						<option th:each="pagamento : ${tiposDePagamento}"
+							th:text="${pagamento.descricao}" th:value="${pagamento.codigo}"></option>
+					</select>
+				</div>
+			</div>
+
+
+			<div>
+				<button class="btn  btn-primary" type="submit" name="action">Pesquisar
+
+				</button>
+			</div>
+
+		</form>
+
+
+	</div>
+	<br>
+	<div class="container-fluid">
+		<div class="table-responsive">
+			<table id="testTable"
+				class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="aw-table-header-solid">
+					<tr>
+						<th>#</th>
+						<th>Cliente</th>
+						<th>Descrição</th>
+						<th>Validade</th>
+						<th>Pagamento</th>
+						<th>Valor Original</th>
+						<th>Valor pago</th>
+						<th>Tipo</th>
+						<th>Situação</th>
+						<th>Pagamento</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="titulo : ${pagina.conteudo}">
+						<td th:text="${titulo.codigo}">1</td>
+						<td th:text="${titulo.fornecedor.nome}">Lucas</td>
+						<td th:text="${titulo.descricao}">Lucas</td>
+						<td th:text="${{titulo.dataDeValidade}}">Lucas</td>
+						<td th:text="${{titulo.dataDoPagamento}}"></td>
+						<td th:text="|R$ ${{titulo.valorOriginal}}|"></td>
+						<td
+							th:text="|R$ ${{titulo.valorPago == null ? 0 : titulo.valorPago}} |"></td>
+						<td th:text="${titulo.tipo.descricao}"></td>
+						<td th:text="${titulo.situacao.descricao}"></td>
+						<td th:text="${titulo.tipoDePagamento.descricao}"></td>
+						<td><a class="tooltipped" data-position="top" data-delay="50"
+							data-tooltip="Editar"
+							th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"> <i
+								class="glyphicon glyphicon-pencil"></i>
+						</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+							title="Excluir" href="#"
+							data:url="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
+							data:objeto="${titulo.descricao}"> <i
+								class="glyphicon glyphicon-remove"></i>
+						</a> <a class="tooltipped js-remover-entidade-btn" data-position="top"
+							href="#modal-remover-entidade"
+							th:attr="data-codigo=${titulo.codigo}, data-nome=${titulo.descricao}"
+							data-delay="50" data-tooltip="Apagar" style="margin-left: 9px">
+						</a></td>
+					</tr>
+					<tr>
+						<td colspan="9" th:if="${#lists.isEmpty(pagina.vazia)}">Nenhum
+							título encontrado!</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<th:block th:replace="fragments/pagination :: pagination (${pagina})">
+	</th:block>
+
+
+
+
+
+
+	<!-- Modal Estrutura -->
+	<div id="modal-remover-entidade" class="modal">
+		<div class="modal-content">
+			<h4>Exclusão de título</h4>
+			<span>Tem certeza que deseja remover a título ? </span>
+		</div>
+		<div class="modal-footer">
+			<form th:attr="data-url-remover=@{/titulos}" method="post">
+
+				<input type="hidden" name="_method" value="DELETE" />
+
+				<button type="submit"
+					class="modal-action modal-close waves-effect waves-light btn red darken-1"
+					style="margin: 6px">Sim</button>
+
+				<a href="#!"
+					class="modal-action modal-close waves-effect waves-light btn teal darken-3">Não</a>
+			</form>
+		</div>
+	</div>
+
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/layout/javascripts/materialize.js}"></script>
+	<script th:src="@{/layout/javascripts/financeiro.js}"></script>
+</th:block>
+</body>
+</html>

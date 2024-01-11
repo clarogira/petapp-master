@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Cheios de Charme</title>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/vendors.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/algaworks.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/application.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/pet.css}" />	
+<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/bootstrap-datepicker.standalone.min.css}" />	
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/uikit.min.css}">
+
+<link rel="shortcut icon"              th:href="@{/img/favicon.png}" />
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+	<div class="aw-layout-loading  js-loading-overlay">
+		<div class="aw-layout-loading__container">
+			<span class="aw-balls-spinner">Carregando...</span>
+		</div>
+	</div>
+
+	<div class="aw-layout-page">
+
+		<div th:replace="fragments/barraNavegacao :: navbar"></div>
+        <div th:replace="fragments/barraLateral :: aside"></div>
+		
+		<section class="aw-layout-content js-contet" layout:fragment="conteudo"></section>
+		
+		<div th:replace="fragments/footer :: footer"></div>
+</div>
+
+<script th:src="@{/layout/javascripts/vendors.min.js}"></script>
+<script th:src="@{/layout/javascripts/algaworks.min.js}"></script>
+<script th:src="@{/js/uikit.min.js}"></script>
+<script th:src="@{/js/components/upload.min.js}"></script>
+<script th:src="@{/layout/javascripts/jquery.maskMoney.min.js}"></script>
+<script th:src="@{/layout/javascripts/jquery.easy-autocomplete.min.js}"></script>
+<script th:src="@{/layout/javascripts/cliente.cadastro-rapido.js}"></script>
+<script th:src="@{/layout/javascripts/fornecedor.cadastro-rapido.js}"></script>
+<script th:src="@{/layout/javascripts/handlebars.min.js}"></script>
+<script th:src="@{/layout/javascripts/jquery.mask.min.js}"></script>
+<script th:src="@{/layout/javascripts/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/layout/javascripts/bootstrap-datepicker.pt-BR.min.js}"></script>
+<script th:src="@{/layout/javascripts/numeral.min.js}"></script>
+<script th:src="@{/layout/javascripts/pt-br.min.js}"></script>
+
+<script th:src="@{/layout/javascripts/pet.js}"></script>
+<script th:src="@{/layout/javascripts/petapp.dialogo-excluir.js}"></script>
+<script th:src="@{/layout/javascripts/multiselecao.js}"></script>
+<th:block layout:fragment="javascript-extra"></th:block>
+
+</body>
+</html>

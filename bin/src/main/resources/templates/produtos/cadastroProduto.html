@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/components/upload.min.css}">
+
+
+    <script type="text/javascript">
+
+        String.prototype.formatMoney = function() {
+
+            var v = this;
+
+
+
+            if(v.indexOf('.') === -1) {
+
+                v = v.replace(/([\d]+)/, "$1,00");
+
+            }
+
+
+
+            v = v.replace(/([\d]+)\.([\d]{1})$/, "$1,$20");
+
+            v = v.replace(/([\d]+)\.([\d]{2})$/, "$1,$2");
+
+            v = v.replace(/([\d]+)([\d]{3}),([\d]{2})$/, "$1.$2,$3");
+
+
+
+            return v;
+
+        };
+
+        function id( el ){
+
+            return document.getElementById( el );
+
+        }
+
+        function getMoney( el ){
+
+            var money = id( el ).value.replace( ',', '.' );
+
+            return parseFloat( money );
+
+        }
+
+        function soma()
+
+        {
+
+            var total = getMoney('valorCompra')*getMoney('porcentagem');
+
+            id('valorVenda').value = String(total.toFixed(2)).formatMoney();
+
+        }
+
+    </script>
+
+</head>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="col-xs-10">
+					<h2 style="color: #A3723D" th:if="${produto.nova}">Cadastro de produto</h2>
+					<h2 style="color: #A3723D" th:unless="${produto.nova}" th:text="|Edição do produto  ${produto.nome}|">Edição de produto</h2>
+				</div>
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn btn-primary" href="/produtos"> <i
+						class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Pesquisa
+							Produto</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="container-fluid">
+
+		<th:block th:include="fragments/MensagemSucesso"></th:block>
+
+
+       <form class="container-fluid" method="post" th:action= "${produto.nova} ? @{/produtos/nova} : @{/produtos/{codigo}(codigo=${produto.codigo})}" th:object="${produto}">
+				<input type="hidden" th:field="*{codigo}" />
+		
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			<div class="row">
+				<div class="form-group col-md-7"
+					style="font-weight: bold; color: #A3723D">
+					<label class="control-label" for="fornecedor">fornecedor</label> <select
+						id="fornecedor" class="form-control" th:field="*{fornecedor}">
+						<option value="">Selecione o Fornecedor</option>
+						<option th:each="fornecedor : ${todosFornecedores}"
+							th:text="${fornecedor.nome}" th:value="${fornecedor.codigo}"></option>
+					</select>
+					<div class="bw-field-action__icon">
+						<a href="#" data-toggle="modal"
+							data-target="#modalCadastroRapidoFornecedor"> <i
+							class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+						</a>
+					</div>
+				</div>
+
+				<div class="form-group col-md-3">
+					<label class="control-label" for="categoria">Categoria</label> <select
+						class="form-control" th:field="*{categoria}">
+						<option value="">Selecione</option>
+						<option th:each="categoria : ${categorias}"
+							th:value="${categoria}" th:text="${categoria.categoria}"></option>
+
+					</select>
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-8">
+					<label class="control-label" for="Nome:">Produto</label> <input
+						type="text" class="form-control" placeholder="Produto"
+						th:field="*{nome}" />
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label" for="estoque">Estoque</label> <input
+						type="number" class="form-control" placeholder="estoque"
+						th:field="*{estoque}" />
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label" for="peso">Peso KG</label> <input
+						type="text" class="form-control js-decimal" placeholder="peso"
+						th:field="*{peso}" />
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="form-group col-md-3" >
+					<label class="control-label" for="validade">Validade</label> 
+					<input	type="text" required="required" class="form-control js-date" th:field="*{validade}" />
+				
+				</div>
+				<div class="col-sm-3  form-group">
+					<label class="control-label" for="valor">Valor de compra</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input name="valorCompra" id="valorCompra" type="text" class="form-control js-decimal "
+							th:field="*{valorCompra}" />
+					</div>
+				</div>
+					 
+				
+
+				<div class="col-sm-3  form-group">
+				
+				
+<label class="control-label" for="porcentagem">Margem de Lucro</label>
+  <select id="porcentagem" class="form-control "	name="porcentagem" onchange="soma()">
+						<option value="1" >Selecione</option>
+						<option value="1.35">35%</option>
+						<option value="1.40">40%</option>
+						<option value="1.45">45%</option>
+						<option value="1.50">50%</option>
+						<option value="1.55">55%</option>
+						<option value="1.6">60%</option>
+						<option value="1.65">65%</option>
+						<option value="1.7">70%</option>
+						<option value="1.75">75%</option>
+						<option value="1.8">80%</option>
+						<option value="1.85">85%</option>
+						<option value="1.9">90%</option>
+						<option value="1.95">95%</option>
+						<option value="2">100%</option>
+
+					</select> 
+ 
+</div>
+<div class="col-sm-3  form-group">
+					<label class="control-label" for="valor">Valor de Venda</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input  name="valorVenda"  id="valorVenda" type="text" class="form-control  js-decimal js-valor-final"
+							th:field="*{valorVenda}" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label" for="descricao">Descrição</label>
+					<textarea rows="3" class="form-control" placeholder="descrição"
+						th:field="*{descricao}"></textarea>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<input type="text" th:field="*{foto}">
+					<input type="text" th:field="*{novaFoto}">
+					<label	class="control-label">Foto</label>
+
+					<div class="js-container-foto-produto"
+						th:attr="data-url-fotos=@{/img/produtos}">
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i> <span>Arraste
+								a foto aqui ou </span> <a class="bw-upload-form-file">selecione <input
+								id="upload-select" type="file" accept=".jpg,.jpeg,.png" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+
+			</form>
+
+	</div>
+
+	<script>
+		function excluir() {
+			this.valorFinal = $('.js-valor-final');
+			this.valorCompraInput = $('#valorCompra');
+			this.valorPorcentagemInput = $('#porcentagem');
+			this.valorVendaInput = $('#valorVenda');
+			var valorFinal = this.valorCompraInput  - this.valorPorcentagemInput;
+			this.valorFinal.html(valorFinal);
+		}
+	</script>
+	<div th:replace="fornecedores/CadastroFornecedorModal :: modal"></div>
+	<th:block th:replace="hbs/FotoProduto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/layout/javascripts/upload-foto-produto.js}"></script>
+</th:block>
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input"
+			type="text" placeholder="O que você está procurando?" />
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+
+</html>

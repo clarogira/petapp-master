@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head></head>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-10">
+			<h2><span  style="color: #A3723D"class="card-title"
+				th:text="${codigo == null ? 'Cadastro de  Fornecedor' : 'Edição de  Fornecedor'}">Cadastro
+				de título</span> <span style="color: #A3723D" th:text="${fornecedor.nome}"></span>	</h2>
+				
+		</div>
+		<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn btn-primary" href="/fornecedores">
+						<i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Pesquisa Fornecedor</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="container-fluid">
+
+<th:block th:include="fragments/MensagemSucesso"></th:block>
+
+
+		<form class="container-fluid" method="post" th:action= "${fornecedor.nova} ? @{/fornecedores/nova} :	@{/fornecedores/{codigo}(codigo=${fornecedor.codigo})}" th:object="${fornecedor}" th:fragment="fornecedorModal">
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			
+<div class="row">
+<input type="hidden" th:field="*{codigo}" />
+  <div class="form-group col-md-8">
+	<label class="control-label"   for="Nome:">Empresa</label> 
+	 <input type="text"	class="form-control" placeholder="Nome" th:field="*{nome}" />
+	</div>
+					<div class="form-group col-md-4">
+				<label class="control-label"   for="email">Telefone</label> <input type="text"
+					class="form-control js-phone-number" placeholder="telefone"
+					th:field="*{telefone}" />
+			</div>
+		</div>	
+			
+			<div class="row">
+
+				<div class="form-group col-md-8">
+					<label class="control-label"   for="representante">Representante</label> <input type="text"
+						class="form-control" placeholder="representante" th:field="*{representante}" />
+				</div>
+				<div class="form-group col-md-4">
+					<label class="control-label"   for="telefoneRepresentante">Telefone</label> <input type="text"
+						class="form-control js-phone-number" placeholder="telefone do Representante"
+						th:field="*{telefoneRepresentante}" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group col-md-3">
+					<label class="control-label" for="ramo">Ramo</label> <select
+						class="form-control" th:field="*{ramo}">
+		<option value="">Selecione</option>
+		<option th:each="ramo : ${ramos}"	th:value="${ramo}" th:text="${ramo.ramo}"></option>
+
+					</select>
+
+				</div>
+				<div class="form-group col-md-5">
+					<label class="control-label"   for="cnpj">CNPJ</label> 
+					<input type="text" class="form-control cnpj" placeholder="Cnpj" th:field="*{cnpj}" />
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label"   for="observacao">Observações</label>
+					<textarea rows="3" class="form-control" th:field="*{observacao}"></textarea>
+				</div>
+
+			</div>
+			<button class="btn  btn-primary" type="submit">Salvar</button>
+
+		</form>
+	
+</div>
+
+	<script>
+		function excluir() {
+			swal(
+					{
+						title : "Tem certeza?",
+						text : "Você não poderá recuperar o fornecedor após a exclusão.",
+						type : "warning",
+						showCancelButton : true,
+						confirmButtonColor : "#DD6B55",
+						confirmButtonText : "Sim, exclua agora!",
+						closeOnConfirm : false,
+						showLoaderOnConfirm : true
+					}, function() {
+						setTimeout(function() {
+							swal("Excluído!",
+									"O cliene foi excluído com sucesso.",
+									"success");
+						}, 2000);
+					});
+		}
+	</script>
+
+</section>
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input"
+			type="text" placeholder="O que você está procurando?" />
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+
+</html>

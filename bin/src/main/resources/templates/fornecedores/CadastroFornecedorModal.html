@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="modal fade" id="modalCadastroRapidoFornecedor" tabindex="-1" role="dialog" th:fragment="modal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle" style="font-weight: bold; color: #A3723D">Cadastro rápido de Fornecedor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     		<div class="alert  alert-danger  hidden  js-mensagem-cadastro-rapido-fornecedor" role="alert"></div>
+     
+		<form class="container-fluid" method="post" th:action="@{/fornecedores/novoFornecedorModal}">
+		
+			
+<div class="row">
+
+  <div class="form-group col-md-8">
+	<label class="control-label"   for="Nome:">Empresa</label> 
+	 <input type="text"	id="nomeFornecedor" class="form-control" placeholder="Nome"/>
+	</div>
+					<div class="form-group col-md-4">
+				<label class="control-label"   for="email">Telefone</label> <input type="text" id="telefoneFornecedor"
+					class="form-control js-phone-number" placeholder="telefone" />
+			</div>
+		</div>	
+			
+			<div class="row">
+
+				<div class="form-group col-md-8">
+				
+					<label class="control-label"   for="representante">Representante</label> 
+					<input type="text" id="representanteFornecedor"	class="form-control" placeholder="representante" />
+				</div>
+				<div class="form-group col-md-4">
+					<label class="control-label"   for="telefoneRepresentante">Telefone</label> <input type="text"
+					id="telefoneRepresentanteFornecedor"	class="form-control js-phone-number" placeholder="telefone do Representante"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group col-md-3">
+					<label class="control-label" for="ramo">Ramo</label> <select
+						class="form-control" id="ramoFornecedor">
+		<option value="">Selecione</option>
+		<option th:each="ramo : ${ramos}"	th:value="${ramo}" th:text="${ramo.ramo}"></option>
+
+					</select>
+
+				</div>
+				<div class="form-group col-md-5">
+					<label class="control-label"   for="cnpj">CNPJ</label> 
+					<input type="text" id="cnpjFornecedor" class="form-control cnpj" placeholder="Cnpj" />
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label"   for="observacao">Observações</label>
+					<textarea rows="3" id="observacaoFornecedor"class="form-control" ></textarea>
+				</div>
+
+			</div>
+			
+
+		</form>
+   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary js-modal-cadastro-fornecedor-salvar-btn">Salvar Fornecedor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

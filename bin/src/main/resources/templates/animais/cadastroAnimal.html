@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/components/upload.min.css}">
+
+</head>
+<body>
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-10">
+					<h2 th:if="${animal.nova}">Cadastro de animal</h2>
+					<h2 th:unless="${animal.nova}" th:text="|Edição da ${animal.nome}|">Edição de animal</h2>
+				</div>
+			
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn btn-primary" href="/animais">
+						<i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Pesquisa Animal</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+	
+	<div class="container-fluid">
+
+
+		<th:block th:include="fragments/MensagemSucesso"></th:block>
+
+
+		<form method="POST" th:object="${animal}" class="form-vertical  js-form-loading" 
+				th:action="${animal.nova} ? @{/animais/nova} : @{/animais/{codigo}(codigo=${animal.codigo})}">
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+
+			<div class="row">
+				<input type="hidden" th:field="*{codigo}" />
+
+				<div class="col-sm-6  form-group">
+					<label class="control-label" for="estilo">Cliente</label>
+					<div class="bw-field-action">
+						<select id="cliente" class="form-control" th:field="*{cliente}">
+							<option value="">Selecione o Cliente</option>
+							<option th:each="cliente : ${clientes}" th:text="${cliente.nome}"
+								th:value="${cliente.codigo}"></option>
+						</select>
+
+						<div class="bw-field-action__icon">
+							<a href="#" data-toggle="modal"
+								data-target="#modalCadastroRapidoCliente"> <i
+								class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6  form-group">
+					<label class="control-label" for="animal">Animal</label> <input
+						type="text" class="form-control" th:field="*{nome}" />
+				</div>
+
+				<div class="form-group col-md-3">
+					<label class="control-label" for="raca">Raça</label> <select
+						class="form-control" th:field="*{raca}">
+		<option value="">Selecione</option>
+		<option th:each="raca : ${racas}"	th:value="${raca}" th:text="${raca.raca}"></option>
+
+					</select>
+
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label" for="cor">Cor</label> <select
+						class="form-control" th:field="*{cor}">
+		<option value="">Selecione</option>
+		<option th:each="cor : ${cores}"	th:value="${cor}" th:text="${cor.cor}"></option>
+
+					</select>
+			</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-sm-12">
+					<label class="control-label" for="observacao">Observação</label>
+					<textarea rows="3" class="form-control" th:field="*{observacao}"></textarea>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<input type="text" th:field="*{foto}">
+					<input type="text" th:field="*{novaFoto}">
+					<label	class="control-label">Foto</label>
+
+					<div class="js-container-foto-animal"
+						th:attr="data-url-fotos=@{/img/animais}">
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i> 
+							<span>Arraste a foto aqui ou </span> <a class="bw-upload-form-file">selecione <input
+								id="upload-select" type="file" accept=".jpg,.jpeg,.png" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+
+			</div>
+		</form>
+
+
+
+	</div>
+
+	<script>
+		function excluir() {
+			swal({
+				title : "Tem certeza?",
+				text : "Você não poderá recuperar o produto após a exclusão.",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonColor : "#DD6B55",
+				confirmButtonText : "Sim, exclua agora!",
+				closeOnConfirm : false,
+				showLoaderOnConfirm : true
+			}, function() {
+				setTimeout(function() {
+					swal("Excluído!", "O produto foi excluído com sucesso.",
+							"success");
+				}, 2000);
+			});
+		}
+	</script>
+	<div th:replace="clientes/CadastroClienteModal :: modal"></div>
+	<th:block th:replace="hbs/FotoAnimal"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/layout/javascripts/upload-foto-animal.js}"></script>
+</th:block>
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input"
+			type="text" placeholder="O que você está procurando?" />
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+</body>
+
+</html>

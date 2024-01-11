@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:brewer="http://brewer.algaworks.com">
+	
+<body>
+<aside class="aw-layout-sidebar  js-sidebar" th:fragment="layout-sidebar">
+	<div class="aw-layout-sidebar__content">
+
+    	<nav class="aw-menu  js-menu">
+      		<ul class="aw-menu__list">
+
+        		<li class="aw-menu__item">
+          			<a th:href="@{/dashboardVenda}">
+            			<i class="glyphicon glyphicon-usd"></i><span>Dashboard</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+      
+          			
+        		</li>
+
+        		
+              <li class="aw-menu__item">
+          			<a href="#">
+            			<i class="glyphicon glyphicon-credit-card"></i><span>Vendas</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+      
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroVenda}">
+			            	<a th:href="@{/vendas/nova}">Nova Venda</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroVenda}">
+			            	<a th:href="@{/vendas}">Pesquisar</a>
+			            </li>
+          			</ul>
+        		</li>
+         	
+        		<li class="aw-menu__item">
+        		
+        		
+          			<a href="#">
+            			<i class="glyphicon glyphicon-plus-sign"></i><span>Cadastros</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroAnimal}">
+			            	<a th:href="@{/animais/nova}">Animal</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroCliente}">
+			            	<a th:href="@{/clientes/nova}">Clientes</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroFornecedor}">
+			            	<a th:href="@{/fornecedores/nova}">Fornecedor</a>
+			            </li>
+			              <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroProduto}">
+			            	<a th:href="@{/produtos/nova}">Produto</a>
+			            </li>
+			              
+          			</ul>
+        		</li>
+<li class="aw-menu__item">
+        		
+        		
+          			<a href="#">
+            			<i class="glyphicon glyphicon-search"></i><span>Pesquisas</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroAnimal}">
+			            	<a th:href="@{/animais}">Animal</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroCliente}">
+			            	<a th:href="@{/clientes}">Clientes</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroFornecedor}">
+			            	<a th:href="@{/fornecedores}">Fornecedor</a>
+			            </li>
+			              <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroProduto}">
+			            	<a th:href="@{/produtos}">Produto</a>
+			            </li>
+			             
+          			</ul>
+        		</li>
+        		<li class="aw-menu__item">
+        		
+        		
+          			<a href="#">
+            			<i class="glyphicon glyphicon-folder-open"></i><span>Relatórios</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroAnimal}">
+			            	<a th:href="@{/animais}">Vendas</a>
+			            </li>
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cadastroCliente}">
+			            	<a th:href="@{/clientes}">Banhos</a>
+			            </li>
+			            
+          			</ul>
+        		</li>
+        		
+      		</ul>
+    	</nav>
+	</div>
+</aside>
+</body>
+</html>

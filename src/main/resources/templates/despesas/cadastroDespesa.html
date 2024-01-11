@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layoutPadrao">
+
+<head></head>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-10">
+			<h2><span  style="color: #A3723D"class="card-title"
+				th:text="${codigo == null ? 'Cadastro de  Despesa' : 'Edição de  Despesa'}">Cadastro
+				de título</span> <span style="color: #A3723D" th:text="${despesa.nome}"></span>	</h2>
+				
+		</div>
+		<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn btn-warning" href="/despesas">
+						<i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Pesquisa Despesas</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="container-fluid">
+
+<th:block th:include="fragments/MensagemSucesso"></th:block>
+
+
+		<form class="container-fluid" method="post" th:action= "${despesa.nova} ? @{/despesas/nova} :	@{/despesas/{codigo}(codigo=${despesa.codigo})}" th:object="${despesa}">
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			
+<div class="row">
+<input type="hidden" th:field="*{codigo}" />
+ </div>
+					
+			<div class="row">
+                <div class="form-group col-md-3" >
+					<label class="control-label" for="data">Data da Nota</label> 
+					<input	type="text" required="required" class="form-control js-date" />
+				
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label" for="número">Número da Nota</label> <input
+						type="number" class="form-control" placeholder="numero" />
+				</div>
+				
+				<div class="form-group col-md-4"
+					style="font-weight: bold; color: #A3723D">
+					<label class="control-label" for="fornecedor">fornecedor</label> <select
+						id="fornecedor" class="form-control" th:field="*{fornecedor}">
+						<option value="">Selecione o Fornecedor</option>
+						<option th:each="fornecedor : ${todosFornecedores}"
+							th:text="${fornecedor.nome}" th:value="${fornecedor.codigo}"></option>
+					</select>
+					
+				</div>
+				<div class="col-sm-3  form-group">
+					<label class="control-label" for="valor">Valor de compra</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input name="valorCompra" id="valorCompra" type="text" class="form-control js-decimal "	 />
+					</div>
+				</div>
+			</div>
+			
+			
+
+				
+				
+				
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label"   for="observacao">Observações</label>
+					<textarea rows="3" class="form-control" th:field="*{observacao}"></textarea>
+				</div>
+
+			</div>
+			</form>
+			<button class="btn  btn-primary" type="submit">Salvar</button>
+
+	
+	
+
+
+	<script>
+		function excluir() {
+			swal(
+					{
+						title : "Tem certeza?",
+						text : "Você não poderá recuperar o fornecedor após a exclusão.",
+						type : "warning",
+						showCancelButton : true,
+						confirmButtonColor : "#DD6B55",
+						confirmButtonText : "Sim, exclua agora!",
+						closeOnConfirm : false,
+						showLoaderOnConfirm : true
+					}, function() {
+						setTimeout(function() {
+							swal("Excluído!",
+									"O cliente foi excluído com sucesso.",
+									"success");
+						}, 2000);
+					});
+		}
+	</script>
+
+</section>
+
+<div class="aw-search-modal  js-search-modal">
+	<form action="#" class="aw-search-modal__form">
+		<input class="aw-search-modal__input  js-search-modal-input"
+			type="text" placeholder="O que você está procurando?" />
+		<div class="aw-search-modal__input-icon">
+			<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+		</div>
+	</form>
+
+	<div class="aw-search-modal__controls">
+		<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+	</div>
+</div>
+
+</html>
